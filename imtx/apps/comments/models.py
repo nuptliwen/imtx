@@ -13,6 +13,8 @@ from django.db.models.fields.files import ImageFieldFile
 from managers import CommentManager
 from signals import comment_was_posted, comment_save
 
+from BeautifulSoup import BeautifulSoup
+
 # Create your models here.
 COMMENT_MAX_LENGTH = getattr(settings, 'COMMENT_MAX_LENGTH', 3000)
 COMMENT_MAX_DEPTH = getattr(settings, 'COMMENT_MAX_DEPTH', 5)
@@ -244,6 +246,13 @@ def on_comment_was_posted(sender, comment, request, *args, **kwargs):
         from akismet import Akismet
         from akismet import AkismetError
     except:
+        return
+
+    soup = BeautifulSoup(comment.content)
+
+    if soup.findAll('a'):
+        comment.is_public = False
+        comment.save()
         return
 
     if hasattr(settings, 'AKISMET_API_KEY'):
