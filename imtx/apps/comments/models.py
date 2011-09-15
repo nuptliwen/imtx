@@ -279,4 +279,5 @@ def on_comment_was_posted(sender, comment, request, *args, **kwargs):
     except AkismetError:
         comment.save()
 
-comment_was_posted.connect(on_comment_was_posted)
+# Because I already have a more powerful fuck spammer tool :)
+# comment_was_posted.connect(on_comment_was_posted)
