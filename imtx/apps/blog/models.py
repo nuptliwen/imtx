@@ -71,12 +71,12 @@ class Post(models.Model):
     objects = PostManager()
     tag = TagField()
 
-    def save(self):
+    def save(self, *args, **kwargs):
         try:
             self.content = html.clean_html(self.content)
         except:
             pass
-        super(Post, self).save()
+        super(Post, self).save(*args, **kwargs)
 
         # Initial the views and comments count to 0 if the PostMeta isn't available
         pm, created = PostMeta.objects.get_or_create(post=self, meta_key='views')
