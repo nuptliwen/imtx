@@ -238,8 +238,8 @@ class Media(models.Model):
     class Meta:
         verbose_name_plural = _('Media')
 
-    def save(self, force_insert=False, force_update=False):
-        super(Media, self).save(force_insert, force_update)
+    def save(self, *args, **kwargs):
+        super(Media, self).save(*args, **kwargs)
         base = Image.open(self.image.path)
         width, height = base.size
 
@@ -259,7 +259,7 @@ class Media(models.Model):
 
         base.save(os.path.join(settings.MEDIA_ROOT, relate_path))
         self.watermarked = ImageFieldFile(self, self.watermarked, relate_path)
-        super(Media, self).save(force_insert, force_update)
+        super(Media, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return _('<Media: %s, uploaded at %s>') % (self.title, self.date.strftime('%I:%M%p, %Y/%m/%d'))
