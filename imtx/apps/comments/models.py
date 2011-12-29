@@ -1,4 +1,6 @@
+import re
 import datetime
+
 from django.db import models
 from django.conf import settings
 from django.core import urlresolvers
@@ -13,7 +15,6 @@ from django.db.models.fields.files import ImageFieldFile
 from managers import CommentManager
 from signals import comment_was_posted, comment_save
 
-from BeautifulSoup import BeautifulSoup
 
 # Create your models here.
 COMMENT_MAX_LENGTH = getattr(settings, 'COMMENT_MAX_LENGTH', 3000)
@@ -248,9 +249,7 @@ def on_comment_was_posted(sender, comment, request, *args, **kwargs):
     except:
         return
 
-    soup = BeautifulSoup(comment.content)
-
-    if soup.findAll('a'):
+    if not re.search(ur'[\u4e00-\u9fa5]+', comment.content):
         comment.is_public = False
         comment.save()
         return
@@ -275,8 +274,10 @@ def on_comment_was_posted(sender, comment, request, *args, **kwargs):
 
             if ak.comment_check(comment.content.encode('utf-8'), data=data, build_data=True):
                 comment.is_public = False
+                comment.is_removed = True
                 comment.save()
     except AkismetError:
         comment.save()
 
-comment_was_posted.connect(on_comment_was_posted)
+# Because I already have a more powerful fuck spammer tool :)
+# comment_was_posted.connect(on_comment_was_posted)
