@@ -1,5 +1,6 @@
 #coding: utf-8
 import urllib
+from collections import OrderedDict
 
 from django.http import HttpResponse
 from django.utils import simplejson
@@ -51,8 +52,8 @@ def aqi_category(aqi):
     else:
         return u"尼玛！PM2.5爆表啦！"
 
-def zhejiangpm25(request):
-    data = {}
+def get_pm25_dict():
+    data = OrderedDict()
     content = urllib.urlopen('http://app.zjepb.gov.cn:8080/wasdemo/search?channelid=121215').read()
 
     soup = BeautifulSoup(content)
@@ -62,9 +63,12 @@ def zhejiangpm25(request):
         city = tr.findChild().text
         concentration = int(tr.findChildren()[3].text)
         aqi = aqi_pm25(concentration)
-        category = aqi_category(aqi_pm25(aqi))
+        category = aqi_category(aqi)
         data[city] = {'concentration': concentration,
                       'aqi': aqi,
                       'category': category}
-    response = simplejson.dumps(data)
+    return data
+
+def zhejiangpm25(request):
+    response = simplejson.dumps(get_pm25_dict())
     return HttpResponse(response, mimetype="application/json")
