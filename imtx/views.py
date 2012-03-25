@@ -7,16 +7,11 @@ from django.utils import simplejson
 
 from BeautifulSoup import BeautifulSoup
 
-def linear(aqi_high, aqi_low, conc_high, conc_low, concentration):
-    a = 0
-    conc = float(concentration)
+def linear(aqi_high, aqi_low, conc_high, conc_low, conc):
     a = ((conc - conc_low) / (conc_high - conc_low)) * (aqi_high - aqi_low) + aqi_low
     return int(round(a))
 
-def aqi_pm25(concentration):
-    conc = float(concentration)
-    c = int(round(10*conc)) / 10
-
+def aqi_pm25(c):
     if c >= 0 and c < 15.5:
         return linear(50, 0, 15.4, 0, c)
     elif c >= 15.5 and c < 35.5:
