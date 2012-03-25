@@ -33,7 +33,7 @@ feed = {
 
 urlpatterns = patterns('',
     (r'^sitemap.xml$', cache_page(sitemap_views.sitemap, 60 * 60 * 6), {'sitemaps': sitemaps}),
-    (r'^zhejiangpm25$', 'imtx.views.zhejiangpm25'),
+#    (r'^zhejiangpm25$', 'imtx.views.zhejiangpm25'),
     (r'^admin/', include(admin.site.urls)),
     url(r'^feed/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', 
         {'feed_dict': feed}, name='feed'),

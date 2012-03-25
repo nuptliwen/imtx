@@ -10,7 +10,8 @@ from imtx.views import get_pm25_dict
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        for city, data in get_pm25_dict().items():
-            message = u'%s昨日空气质量: ' % city + u'PM2.5浓度: %(concentration)s ug/m3, AQI: %(aqi)s, 等级: %(category)s' % data
+        pmdata = get_pm25_dict()
+        for city, data in pmdata['cities'].items():
+            message = u'【%s %s空气质量】' % (pmdata['date'], city) + u'PM2.5浓度: %(concentration)s ug/m3, AQI: %(aqi)s, 等级: %(category)s' % data
             os.system(u'twitter set "%s"' % message)
             time.sleep(3)

@@ -53,10 +53,13 @@ def aqi_category(aqi):
         return u"尼玛！PM2.5爆表啦！"
 
 def get_pm25_dict():
-    data = OrderedDict()
+    data = {}
     content = urllib.urlopen('http://app.zjepb.gov.cn:8080/wasdemo/search?channelid=121215').read()
 
     soup = BeautifulSoup(content)
+    data['date'] = soup.find(color='red').text
+    data['cities'] = OrderedDict()
+
     for td in soup.findAll(height='23'):
         tr = td.parent
 
@@ -64,7 +67,7 @@ def get_pm25_dict():
         concentration = int(tr.findChildren()[3].text)
         aqi = aqi_pm25(concentration)
         category = aqi_category(aqi)
-        data[city] = {'concentration': concentration,
+        data['cities'][city] = {'concentration': concentration,
                       'aqi': aqi,
                       'category': category}
     return data
