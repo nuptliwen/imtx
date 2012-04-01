@@ -21,7 +21,7 @@ class Command(BaseCommand):
             for city, data in pmdata['cities'].items():
                 message = u'【%s %s空气质量】' % (pmdata['date'], city) + u'PM2.5浓度: %(concentration)s ug/m3, AQI: %(aqi)s, 等级: %(category)s' % data
                 print message
-                os.system(u'/home/tualatrix/public_html/imtx.me/bin/twitter set "%s"' % (message)
+                os.system(u'/home/tualatrix/public_html/imtx.me/bin/twitter set "%s"' % (message))
                 time.sleep(3)
 
             f = open('timestamp', 'w')
