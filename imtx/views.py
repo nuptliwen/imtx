@@ -52,7 +52,7 @@ def get_pm25_dict():
     content = urllib.urlopen('http://app.zjepb.gov.cn:8080/wasdemo/search?channelid=121215').read()
 
     soup = BeautifulSoup(content)
-    data['date'] = soup.find(color='red').text
+    data['date'] = soup.find(id='1')['value']
     data['cities'] = OrderedDict()
 
     for td in soup.findAll(height='23'):
