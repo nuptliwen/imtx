@@ -137,7 +137,7 @@ def search(request):
     return response
 
 def redirect_feed(request):
-    return HttpResponseRedirect(urlresolvers.reverse('feed', args=('latest',)))
+    return HttpResponseRedirect(urlresolvers.reverse('feed'))
 
 @login_required(redirect_field_name='next')
 def upload(request):
