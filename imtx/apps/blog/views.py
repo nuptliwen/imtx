@@ -131,7 +131,7 @@ def search(request):
                               'page': page,
                               'pagi_path': qd.urlencode(),
                               'title': title,
-                              })
+                              }, RequestContext(request))
     response.set_cookie('search',request.META['REMOTE_ADDR'], max_age=1)
 
     return response
