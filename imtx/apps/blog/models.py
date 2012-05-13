@@ -197,8 +197,8 @@ class Link(models.Model):
     def __unicode__(self):
         return '%s: %s' % (self.name, self.url)
 
-WATER_BIG = os.path.join(settings.MEDIA_ROOT, 'img/logo.png')
-WATER_SMALL = os.path.join(settings.MEDIA_ROOT, 'img/logo_small.png')
+WATER_BIG = os.path.join(settings.STATIC_ROOT, 'img/logo.png')
+WATER_SMALL = os.path.join(settings.STATIC_ROOT, 'img/logo_small.png')
 
 class Menu(models.Model):
     slug = models.SlugField(unique=True)

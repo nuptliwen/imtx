@@ -6,6 +6,7 @@ from django.views.generic import list_detail
 from django.contrib.sitemaps import Sitemap
 from django.contrib.sitemaps import views as sitemap_views
 from django.views.decorators.cache import cache_page
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from imtx.apps.blog.models import Post, Category
 from imtx.apps.blog.feeds import LatestPosts, LatestCommentFeed
@@ -26,17 +27,12 @@ sitemaps = {
     'posts': PostSitemap,
 }
 
-feed = {
-    'latest': LatestPosts,
-    'comments': LatestCommentFeed,
-}
-
 urlpatterns = patterns('',
     (r'^sitemap.xml$', cache_page(sitemap_views.sitemap, 60 * 60 * 6), {'sitemaps': sitemaps}),
 #    (r'^zhejiangpm25$', 'imtx.views.zhejiangpm25'),
     (r'^admin/', include(admin.site.urls)),
-    url(r'^feed/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', 
-        {'feed_dict': feed}, name='feed'),
+    url(r'^feed/latest/$', LatestPosts()),
+    url(r'^feed/comments/$', LatestCommentFeed()),
     (r'^comment/', include('imtx.apps.comments.urls')),
     (r'^comments/$', 'imtx.apps.comments.views.comment_list'),
     (r'^xmlrpc/$', 'django_xmlrpc.views.handle_xmlrpc', {}, 'xmlrpc'),
@@ -58,7 +54,8 @@ urlpatterns += patterns('imtx.apps.blog.views',
 )
 
 if settings.DEBUG:
+    urlpatterns += staticfiles_urlpatterns()
     urlpatterns += patterns('',
-        (r'^static/(?P<path>.*)$', 'django.views.static.serve',
+        (r'^media/(?P<path>.*)$', 'django.views.static.serve',
             {'document_root': settings.MEDIA_ROOT}),
     )

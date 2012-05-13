@@ -2,7 +2,7 @@ import time
 import datetime
 
 from django.db.models import Q
-from django.contrib.syndication.feeds import Feed  
+from django.contrib.syndication.views import Feed
 
 from models import Post
 from imtx.apps.comments.models import Comment

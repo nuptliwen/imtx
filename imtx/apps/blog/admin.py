@@ -16,6 +16,7 @@ class PostAdmin(admin.ModelAdmin):
         'type': admin.VERTICAL
     }
     search_fields = ('title', 'author', 'content')
+    ordering = ['-date']
 
     class Media:
         js = (

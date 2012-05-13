@@ -5,3 +5,8 @@ pictures
 videos
 settings.py
 cscope*
+imtx/local_settings.py
+imtx/static/admin/
+imtx/static/css/
+imtx/static/img/
+imtx/static/js/
