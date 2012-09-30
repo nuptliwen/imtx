@@ -1,7 +1,7 @@
 PIL
 fabric
-django==1.4
-south==0.7.5
+django==1.4.1
+south==0.7.6
 MySQL-python
 beautifulsoup
 pygments
