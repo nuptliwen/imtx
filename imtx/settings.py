@@ -152,7 +152,7 @@ DIRECTORY_URLS = (
 )
 
 # Pipeline
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 
 PIPELINE_CSS = {
     'imtx': {
