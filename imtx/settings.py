@@ -101,6 +101,7 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -133,6 +134,7 @@ INSTALLED_APPS = (
     'pingback',
     'tagging',
     'south',
+    'pipeline',
 )
 
 #Login
@@ -148,6 +150,33 @@ DIRECTORY_URLS = (
     'http://ping.blogs.yandex.ru/RPC2',
     'http://rpc.technorati.com/rpc/ping',
 )
+
+# Pipeline
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+
+PIPELINE_CSS = {
+    'imtx': {
+        'source_filenames': (
+          'css/style.css',
+          'css/highlight.css',
+        ),
+        'output_filename': 'css/imtx.css',
+        'extra_context': {
+            'media': 'screen',
+        },
+    },
+}
+
+PIPELINE_JS = {
+    'imtx': {
+        'source_filenames': (
+          'js/comment-reply.js',
+        ),
+        'output_filename': 'js/imtx.js',
+    }
+}
+
+PIPELINE_YUI_BINARY = '/usr/local/bin/yuglify'
 
 try:
     from local_settings import *

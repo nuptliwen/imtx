@@ -54,12 +54,15 @@ def install():
 def runserver():
     local('cd imtx && python manage.py runserver', capture=False)
 
-def deploy(run_pip='no'):
+def deploy(pip='no', restart='no', static='no'):
     with cd('~/public_html/imtx.me/imtx'):
         run('git pull origin master')
-        if run_pip != 'no':
+        if pip != 'no':
             run('/home/tualatrix/public_html/imtx.me/bin/pip install -r stable-requirements.txt')
-        run('touch django.wsgi')
+        if restart != 'no':
+            run('sudo service uwsgi restart')
+        if static != 'no':
+            run('/home/tualatrix/public_html/imtx.me/bin/python /home/tualatrix/public_html/imtx.me/imtx/manage.py collectstatic --noinput')
 
 def migrate():
     with cd('~/public_html/imtx.me/imtx/imtx'):

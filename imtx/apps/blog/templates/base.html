@@ -1,13 +1,27 @@
-{% load menu utils %}<!DOCTYPE html>
+{% load compressed menu utils %}
+<!DOCTYPE html>
 <html>
 <head>
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/highlight.css" type="text/css" media="screen" />
     <link rel="alternate" type="application/rss+xml" title="订阅 TualatriX Feed" href="http://feeds.feedburner.com/tualatrix" />
     <link rel="pingback" href="{% fullurl xmlrpc %}" />
     <link rel="shortcut icon" type="image/ico" href="{{ STATIC_URL }}img/favicon.ico" />
-    <meta name="google-site-verification" content="dQrNwIxyr9oBaxexqgzQKlenOC-d-7VmT_asQEizeJU" />{% block extrahead %}{% endblock %}
+    <meta name="google-site-verification" content="dQrNwIxyr9oBaxexqgzQKlenOC-d-7VmT_asQEizeJU" />
+    {% compressed_css "imtx" %}
+    {% block extrahead %}{% endblock %}
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-503846-2']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
 </head>
         
 <body>
@@ -29,8 +43,15 @@
             <div id="content" class="narrowcolumn">
                 {% block content %}{% endblock %}
             </div>
-
-{% include "sidebar.html" %}
-    </div>
+    {% include "sidebar.html" %}
+        </div>
         <hr />
-{% include "footer.html" %}
+        <div id="footer">
+            <p>
+            Powered by <a href="http://www.djangoproject.org/" rel="external">Django</a> and <a href="http://imtx.me" title="It's TualatriX's Website.">TualatriX</a>, Theme designed By <a href="http://www.hoofei.com/">Hoofei</a>
+            </p>
+        </div>
+    </div>
+    {% compressed_js "imtx" %}
+</body>
+</html>

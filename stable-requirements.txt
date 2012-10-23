@@ -4,7 +4,8 @@ django==1.4.1
 south==0.7.6
 MySQL-python
 beautifulsoup
-pygments
+pygments==1.5
+django-pipeline==1.2.20
 
 -e svn+http://django-tagging.googlecode.com/svn/trunk/#egg=tagging
 -e git+git@github.com:tualatrix/django-xmlrpc.git@master#egg=django_xmlrpc
