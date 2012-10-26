@@ -49,7 +49,7 @@ def sync():
     local('rm /tmp/%s' % base_name[:-3])
 
 def install():
-    local('pip install -r stable-requirements.txt', capture=False)
+    local('pip install -r requirements.txt', capture=False)
 
 def runserver():
     local('cd imtx && python manage.py runserver', capture=False)
@@ -58,7 +58,8 @@ def deploy(pip='no', restart='no', static='no'):
     with cd('~/public_html/imtx.me/imtx'):
         run('git pull origin master')
         if pip != 'no':
-            run('/home/tualatrix/public_html/imtx.me/bin/pip install -r stable-requirements.txt')
+            run('/home/tualatrix/public_html/imtx.me/bin/pip install -r requirements.txt')
+            run('sudo service uwsgi restart')
         if restart != 'no':
             run('sudo service uwsgi restart')
         if static != 'no':
