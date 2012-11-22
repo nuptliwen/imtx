@@ -137,6 +137,7 @@ INSTALLED_APPS = (
     'tagging',
     'south',
     'pipeline',
+    'paypal.standard.pdt',
 )
 
 # Cache
@@ -190,6 +191,11 @@ PIPELINE_JS = {
 }
 
 PIPELINE_YUI_BINARY = '/usr/local/bin/yuglify'
+
+# Payment
+# This must be set
+PAYPAL_IDENTITY_TOKEN = ''
+PAYPAL_RECEIVER_EMAIL = ''
 
 try:
     from local_settings import *
