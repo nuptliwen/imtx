@@ -138,6 +138,7 @@ INSTALLED_APPS = (
     'south',
     'pipeline',
     'paypal.standard.pdt',
+    'manity',
 )
 
 # Cache

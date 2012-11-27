@@ -29,8 +29,7 @@ sitemaps = {
 
 urlpatterns = patterns('',
     (r'^sitemap.xml$', cache_page(sitemap_views.sitemap, 60 * 60 * 6), {'sitemaps': sitemaps}),
-    (r'^purchase/$', 'imtx.views.purchase'),
-    (r'^paypal/pdt/', include('paypal.standard.pdt.urls')),
+    (r'^manity/', include('manity.urls')),
 #    (r'^zhejiangpm25$', 'imtx.views.zhejiangpm25'),
     (r'^admin/', include(admin.site.urls)),
     url(r'^feed/latest/$', LatestPosts(), name='feed'),
