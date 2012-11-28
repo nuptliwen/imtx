@@ -1,6 +1,9 @@
 from django.shortcuts import render_to_response
 from paypal.standard.forms import PayPalPaymentsForm
 
+def index(request):
+    return render_to_response("index.html")
+
 def purchase(request):
     # What you want the button to do.
     paypal_dict = {

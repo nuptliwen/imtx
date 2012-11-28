@@ -1,3 +1,14 @@
-<h1>Show me the money!</h1>
-<!-- writes out the form tag automatically -->
-{{ form.sandbox }}
+{% load compressed %}
+<html>
+  <head>
+    <title></title>
+    {% compressed_css 'manity' %}
+  </head>
+    <body>
+      <div id="wrapper">
+        <h1>Show me the money!</h1>
+        <!-- writes out the form tag automatically -->
+        {{ form.sandbox }}
+      </div>
+    </body>
+</html>

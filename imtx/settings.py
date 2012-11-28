@@ -180,6 +180,15 @@ PIPELINE_CSS = {
             'media': 'screen',
         },
     },
+    'manity': {
+        'source_filenames': (
+          'css/manity-style.css',
+        ),
+        'output_filename': 'css/manity.css',
+        'extra_context': {
+            'media': 'screen',
+        },
+    },
 }
 
 PIPELINE_JS = {
