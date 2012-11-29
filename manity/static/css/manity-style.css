@@ -26,28 +26,46 @@ body {
     background-color: white;
 }
 
-#header {
-    height: 48px;
-    background-color: red;
+.back {
+    height: 80px;
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #c5c5c5;
+    box-shadow: 0 1px #ececec;
 }
 
-#header h1 {
+.header {
+    display: block;
+    height: 80px;
+}
+
+.header img {
     float: left;
+    vertical-align: middle;
 }
 
-#nav {
+.header h1 {
+    float: left;
+    background: transparent url(../img/manity-icon-48.png) no-repeat left center;
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 58px;
+    line-height: 80px;
+    font-size: 24px;
+}
+
+.nav {
     float: right;
 }
 
-#nav ul {
+.nav ul {
     list-style-type: none;
 }
 
-#nav ul li {
+.nav ul li {
     float: left;
 }
 
-#wrapper {
+.wrapper {
     width: 960px;
     margin: 0 auto;
 }

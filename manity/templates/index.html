@@ -1,27 +1,30 @@
-{% load compressed %}
+{% load compressed staticfiles %}
 <html>
   <head>
     <title></title>
     {% compressed_css 'manity' %}
   </head>
     <body>
-      <div id="wrapper">
-        <div id="header">
-          <h1>Manity!</h1>
-          <div id="nav">
-            <ul>
-              <li>Home</li>
-              <li>Why Manity</li>
-              <li>Q A</li>
-              <li>Purchase</li>
-              <li>Contact</li>
-            </ul>
+      <div class="back">
+        <div class="wrapper">
+          <div class="header">
+            <h1>Manity</h1>
+            <div class="nav">
+              <!--
+              <ul>
+                <li>Home</li>
+                <li>Why Manity</li>
+                <li>Q A</li>
+                <li>Purchase</li>
+                <li>Contact</li>
+              </ul>
+              -->
+            </div>
           </div>
-        </div>
-        <div id="content">
-        </div>
-        <div id="footer">
-          
+          <div class="content">
+          </div>
+          <div class="footer">
+          </div>
         </div>
       </div>
     </body>
