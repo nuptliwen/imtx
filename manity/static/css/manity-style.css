@@ -55,6 +55,8 @@ body {
 
 .nav {
     float: right;
+    line-height: 80px;
+    vertical-align: middle;
 }
 
 .nav ul {
@@ -63,6 +65,19 @@ body {
 
 .nav ul li {
     float: left;
+}
+
+.nav ul li a {
+    text-decoration: none;
+    font-family: 'Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', Tahoma, 'Hiragino Sans GB', STHeiti;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 25px;
+    color: #999999;
+}
+
+.nav ul li a:hover{
+    color: #000;
 }
 
 .wrapper {
