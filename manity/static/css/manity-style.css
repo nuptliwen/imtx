@@ -33,6 +33,11 @@ body {
     box-shadow: 0 1px #ececec;
 }
 
+.wrapper {
+    width: 960px;
+    margin: 0 auto;
+}
+
 .header {
     display: block;
     height: 80px;
@@ -80,7 +85,36 @@ body {
     color: #000;
 }
 
-.wrapper {
-    width: 960px;
-    margin: 0 auto;
+.showarea {
+    height: 510px;
+    padding-top: 95px;
+}
+
+.showarea img {
+    margin: 0 0 0 -50px;
+    float: left;
+}
+
+.description {
+    width: 296px;
+    float: left;
+}
+
+.description h2 {
+    margin-left: 20px;
+    font-size: 64px;
+}
+
+.description p {
+    text-align: right;
+}
+
+.description ul li {
+    margin: 24px 0 0 72px;
+    list-style-type: none;
+    font-size: 24px;
+}
+
+.description img {
+    margin: 88px 0 0 48px;
 }
