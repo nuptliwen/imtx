@@ -133,9 +133,26 @@ body {
     font-size: 18px;
 }
 
-.description p.why {
+.description p.whatif {
     font-size: 14px;
     color: #333333;
+}
+
+.why {
+    padding-bottom: 80px;
+}
+
+.why h2 {
+    font-size: 36px;
+    color: #333333;
+    padding-top: 55px;
+}
+
+.why p {
+    font-size: 14px;
+    color: #666666;
+    padding-top: 45px;
+    line-height: 150%;
 }
 
 .description-back {
