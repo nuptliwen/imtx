@@ -11,9 +11,9 @@
             <h1>Manity</h1>
             <div class="nav">
               <ul>
-                <li class="selected"><a href="#home">Home</a></li>
+                <li><a href="#home">Home</a></li>
                 <li><a href="#why">Why Manity</a></li>
-                <li><a href="#qa">FAQ</a></li>
+                <li><a href="#faq">FAQ</a></li>
                 <li><a href="#purchase">Purchase</a></li>
                 <li><a href="#contact">Contact</a></li>
               </ul>
@@ -44,7 +44,7 @@
             <p class="what">Manity is a fast app launch and switch tool designed for OS X. </p>
             <p class="whatif">If you are a people who would like to use keyboard to make effective usage of operating system, Manity will help you to maximize your efficiency.</p>
           </div>
-          <div class="why">
+          <div id="why" class="why">
             <h2>Why Manity</h2>
             <p>Manity is an easy to use app, you can learn how to use it without any configuration and study. Just remember, when you want to switch to an app, hold the Option key and press the target number, you will be switched to the target app immediately. If this app hasn't launched yet, Manity will also launch it.</p>
             <p>The idea of Manity comes from Ubuntu Unity desktop, if you've ever used Unity desktop and get used to the Super key feature, and want the same feature in OS X, then Manity is designed for you. This is also the initial goal why I developed Manity.</p>
@@ -52,7 +52,7 @@
           </div>
         </div>
       </div>
-      <div class="faq">
+      <div class="faq" id="faq">
         <div class="wrapper">
             <h2>FAQ</h2>
             <h3>1. Can I custom the apps?</h3>
@@ -76,5 +76,12 @@
       <div class="footer">
         <p>Copyright @ Tualatrix Chou 2012</p>
       </div>
+      <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+      <script type="text/javascript" charset="utf-8">
+        $('a').click(function(){
+            $('html, body').animate({
+              scrollTop: $( $(this).attr('href') ).offset().top}, 500);
+            });
+      </script>
     </body>
 </html>
