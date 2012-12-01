@@ -21,7 +21,8 @@ time, mark, audio, video {
     font-size: 100%;
     font: inherit;
     font-family: 'Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', Tahoma, 'Hiragino Sans GB', STHeiti;
-    vertical-align: baseline; }
+    vertical-align: baseline;
+}
 
 body {
     background-color: white;
@@ -86,7 +87,7 @@ body {
 }
 
 .showarea {
-    height: 510px;
+    height: 415;
     padding-top: 95px;
 }
 
@@ -95,28 +96,51 @@ body {
     float: left;
 }
 
-.description {
+.download {
     width: 296px;
     float: left;
 }
 
-.description h2 {
+.download h2 {
     margin-left: 20px;
     font-size: 64px;
 }
 
-.description p {
+.download p {
     text-align: right;
 }
 
-.description ul li {
+.download ul li {
     margin: 24px 0 0 72px;
     list-style-type: none;
     font-size: 24px;
 }
 
-.description img {
+.download img {
     margin: 88px 0 0 48px;
+}
+
+.description {
+    height: 180;
+    text-align: center;
+}
+
+.description p {
+    padding-top: 40px;
+}
+
+.description p.what {
+    font-size: 18px;
+}
+
+.description p.why {
+    font-size: 14px;
+    color: #333333;
+}
+
+.description-back {
+    background-image:url(../img/showarea-bottom.png);
+    background-repeat:repeat-x;
 }
 
 .footer {
