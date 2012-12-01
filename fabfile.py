@@ -57,7 +57,7 @@ def install():
     local('pip install -r requirements.txt', capture=False)
 
 def runserver():
-    local('cd imtx && python manage.py runserver', capture=False)
+    local('python manage.py runserver', capture=False)
 
 def deploy(pip='no', restart='no', static='no'):
     with cd('~/public_html/imtx.me/imtx'):
