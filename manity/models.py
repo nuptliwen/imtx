@@ -2,7 +2,8 @@ from django.db import models
 
 class Purchaser(models.Model):
     name = models.CharField(max_length=100)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
+    purchased = models.BooleanField(default=False)
 
     class Meta:
         unique_together = (("name", "email"),)

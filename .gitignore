@@ -1,5 +1,7 @@
 *.py[oc]
 *.db
+.DS_Store
+*.swp
 uploads
 pictures
 videos

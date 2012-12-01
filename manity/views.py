@@ -6,8 +6,10 @@ from paypal.standard.forms import PayPalPaymentsForm
 from paypal.standard.pdt.models import PayPalPDT
 from paypal.standard.pdt.forms import PayPalPDTForm
 
+from manity.forms import PurchaserForm
+
 def index(request):
-    return render_to_response("index.html")
+    return render_to_response("index.html", {'form': PurchaserForm()})
 
 def purchase(request):
     # What you want the button to do.

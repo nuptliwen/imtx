@@ -160,11 +160,39 @@ body {
     background-repeat:repeat-x;
 }
 
-.faq {
-    background-image:url(../img/faq-back.png);
+.purchase {
+    background-image:url(../img/purchase-back.png);
     background-repeat:repeat-x;
     background-color: #f6f6f6;
+}
+
+.purchase h2 {
+    font-size: 36px;
+    color: #333333;
+    padding-top: 55px;
+}
+
+.purchase p {
+    font-size: 14px;
+    color: #666666;
+    padding-top: 15px;
+    line-height: 150%;
+}
+
+.purchase form {
+    padding-bottom: 45px;
+}
+
+.purchase table {
+    margin: 20 auto;
+    font-size: 14px;
+    text-align: right;
+}
+
+.faq {
+    border-top: 1px solid #d8d8d8;
     padding-bottom: 80px;
+    box-shadow: 0 1px #d8d8d8;
 }
 
 .faq h2 {
