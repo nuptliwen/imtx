@@ -20,6 +20,7 @@ time, mark, audio, video {
     padding: 0; border: 0;
     font-size: 100%;
     font: inherit;
+    font-family: 'Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', Tahoma, 'Hiragino Sans GB', STHeiti;
     vertical-align: baseline; }
 
 body {
@@ -74,7 +75,6 @@ body {
 
 .nav ul li a {
     text-decoration: none;
-    font-family: 'Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', Tahoma, 'Hiragino Sans GB', STHeiti;
     font-size: 14px;
     font-weight: bold;
     margin-left: 25px;
@@ -117,4 +117,13 @@ body {
 
 .description img {
     margin: 88px 0 0 48px;
+}
+
+.footer {
+    height: 130px;
+    background-color: #11161a;
+    font-size: 12px;
+    line-height: 130px;
+    text-align: center;
+    color: #999999;
 }
