@@ -7,19 +7,31 @@ from paypal.standard.pdt.models import PayPalPDT
 from paypal.standard.pdt.forms import PayPalPDTForm
 
 from manity.forms import PurchaserForm
+from manity.models import Purchaser
 
 def index(request):
-    return render_to_response("index.html", {'form': PurchaserForm()})
+    return render_to_response("index.html",
+                              {'form': PurchaserForm()},
+                              RequestContext(request))
 
 def purchase(request):
     # What you want the button to do.
+    try:
+        purchaser = Purchaser.objects.get(email=request.POST['email'])
+    except Exception, e:
+        print(e)
+        form = PurchaserForm(request.POST)
+        if form.is_valid():
+            purchaser = form.save()
+
     paypal_dict = {
         "business": "tualat_1353483092_biz@gmail.com",
         "amount": "5.00",
         "item_name": "Manity License",
         "invoice": "me.imtx.manity.license",
-        "notify_url": request.build_absolute_uri('/manity/paypal/pdt/'),
-        "return_url": request.build_absolute_uri('/manity/paypal/pdt/'),
+        "notify_url": request.build_absolute_uri('/manity/pdt/?purchaser_id=%s') % purchaser.id,
+#        "notify_url": request.build_absolute_uri('/manity/paypal/pdt/'),
+        "return_url": request.build_absolute_uri('/manity/pdt/?purchaser_id=%s') % purchaser.id,
         "cancel_return": request.build_absolute_uri('/manity/'),
     }
 
@@ -29,8 +41,13 @@ def purchase(request):
     return render_to_response("payment.html", context)
 
 @require_GET
-def pdt(request, item_check_callable=None, template="pdt/pdt.html", context=None):
+def pdt(request, item_check_callable=None, template="pdt.html", context=None):
     """Payment data transfer implementation: http://tinyurl.com/c9jjmw"""
+    purchaser_id = request.GET.get('purchaser_id')
+    purchaser = Purchaser.objects.get(id=purchaser_id)
+    purchaser.purchased = True
+    purchaser.save()
+
     context = context or {}
     pdt_obj = None
     txn_id = request.GET.get('tx')

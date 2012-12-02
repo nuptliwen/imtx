@@ -5,4 +5,3 @@ urlpatterns = patterns('',
     (r'^purchase/$', 'manity.views.purchase'),
     (r'^pdt/', 'manity.views.pdt'),
 )
-
