@@ -206,6 +206,8 @@ PIPELINE_YUI_BINARY = '/usr/local/bin/yuglify'
 # This must be set
 PAYPAL_IDENTITY_TOKEN = ''
 PAYPAL_RECEIVER_EMAIL = ''
+MANITY_PUBLIC_KEY = ''
+MANITY_PRIVATE_KEY = ''
 
 try:
     from local_settings import *

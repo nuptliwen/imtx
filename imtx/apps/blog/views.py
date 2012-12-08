@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.forms.util import ErrorList
 from django.utils import html
 from django.core import urlresolvers
+from django.views.decorators.vary import vary_on_headers
 
 from tagging.models import Tag, TaggedItem
 
@@ -21,6 +22,7 @@ def get_query(request):
     query = html.escape(request.GET.get('s', ''))
     return query
 
+@vary_on_headers('Host')
 def index(request):
     page = get_page(request)
 
