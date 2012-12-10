@@ -3,7 +3,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.contrib.contenttypes.models import ContentType
 from django.utils.encoding import smart_unicode
-from django.utils.html import linebreaks
+from django.utils.html import linebreaks, escape
 
 from imtx.apps.comments.models import Comment
 from imtx.apps.comments.forms import CommentForm
@@ -186,104 +186,6 @@ class ThreadedCommentNode(BaseCommentNode):
                 object_pk_expr = parser.compile_filter(tokens[3])
             )
 
-    def render2(self, context):
-        qs = self.get_query_set(context)
-        comments = list(qs)
-
-        previously_parity = {}
-        def get_even_or_odd(comment, dict = previously_parity):
-            def do_even_or_odd(comment, dict):
-                if comment.has_parent():
-                    depth = comment.get_depth()
-                    if depth not in dict:
-                        dict[depth] = not dict[depth - 1]
-
-                    return dict[depth]
-                else:
-                    if 1 in dict:
-                        previous = dict[1]
-                        dict.clear()
-                        dict[1] = not previous
-                    else:
-                        dict[1] = True
-
-                    return dict[1]
-
-            if do_even_or_odd(comment, dict):
-                return 'even'
-            else:
-                return 'odd'
-
-        def append_comment_start(comment, list, html):
-            commentmeta = {
-                    'id': comment.id,
-                    'url': comment.get_absolute_url(),
-                    'name': comment.user_name,
-                    'user_url': comment.user_url,
-                    'date': comment.date.strftime('%Y %B %d, %H:%M'),
-                    'depth': comment.get_depth(),
-                    'edit': comment.get_admin_url(),
-                    'spam': comment.get_spam_url(),
-                    'content': linebreaks(comment.content),
-#                    'parity': comment.get_parity(),
-                    'parity': get_even_or_odd(comment),
-                }
-            if not comment.has_parent():
-                #TODO author's comment
-                html.append('<li class="comment %(parity)s thread-%(parity)s depth-%(depth)d" id="comment-%(id)d">\n' % commentmeta)
-            else:
-                html.append('<li class="comment %(parity)s depth-%(depth)d" id="comment-%(id)d">\n' % commentmeta)
-
-            if commentmeta['user_url']:
-                html.append('<div id="div-comment-%(id)d"><div class="comment-author vcard"><cite><a href="%(user_url)s" rel="external nofollow">%(name)s</a></cite></div>\n' % commentmeta)
-            else:
-                html.append('<div id="div-comment-%(id)d"><div class="comment-author vcard">%(name)s</div>\n' % commentmeta)
-
-            if context['user'].is_staff:
-                html.append('<div class="comment-meta commentmetadata"><a href="%(url)s">%(date)s</a>&nbsp;&nbsp;<a href="%(edit)s" title="Edit comment">Edit</a>. <a href="%(spam)s" title="Spam comment">Spam</a></div>\n'
-                   '<p>%(content)s</p>\n' % commentmeta)
-            else:
-                html.append('<div class="comment-meta commentmetadata"><a href="%(url)s">%(date)s</a></div>\n'
-                   '<p>%(content)s</p>\n' % commentmeta)
-
-            if comment.get_depth() < COMMENT_MAX_DEPTH:
-                html.append('<div class="reply"><a rel="nofollow" href="%(url)s#respond" onclick=\'return addComment.moveForm("div-comment-%(id)d", "%(id)d", "respond")\'>Reply</a></div></div>\n\n' % commentmeta)
-
-        def append_comment_end(html):
-            html.append('</li>\n')
-
-        def append_child_start(html):
-            html.append('<ul class="children">\n')
-
-        def append_child_end(html):
-            html.append('</ul>\n')
-
-        def create_comment_html(root, list, html):
-            append_comment_start(root, list, html)
-            list.remove(root)
-            if root.has_children():
-                children = root.get_children()
-                for child in children:
-                    append_child_start(html)
-                    create_comment_html(child, list, html)
-
-            append_comment_end(html)
-            if root.has_parent():
-                append_child_end(html)
-
-            if len(list) > 0 and not root.has_parent():
-                create_comment_html(list[0], list, html)
-
-        html = []
-        if comments:
-            sorted = []
-            first = comments[0]
-            html.append('<ol class="commentlist">\n')
-            create_comment_html(first, comments, html)
-            html.append('</ol>')
-
-        return ''.join(html)
-
     def render(self, context):
         qs = self.get_query_set(context)
         comments = list(qs)
@@ -322,7 +224,7 @@ class ThreadedCommentNode(BaseCommentNode):
                     'depth': comment.get_depth(),
                     'edit': comment.get_admin_url(),
                     'spam': comment.get_spam_url(),
-                    'content': linebreaks(comment.content),
+                    'content': linebreaks(escape(comment.content)),
 #                    'parity': comment.get_parity(),
                     'parity': get_even_or_odd(comment),
                 }
