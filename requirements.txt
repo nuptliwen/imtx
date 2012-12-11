@@ -1,6 +1,6 @@
 PIL
 fabric
-django==1.4.2
+django==1.4.3
 south==0.7.6
 MySQL-python
 beautifulsoup
