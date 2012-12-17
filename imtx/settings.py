@@ -137,8 +137,6 @@ INSTALLED_APPS = (
     'tagging',
     'south',
     'pipeline',
-    'paypal.standard.pdt',
-    'manity',
 )
 
 # Cache
@@ -180,15 +178,6 @@ PIPELINE_CSS = {
             'media': 'screen',
         },
     },
-    'manity': {
-        'source_filenames': (
-          'css/manity-style.css',
-        ),
-        'output_filename': 'css/manity.css',
-        'extra_context': {
-            'media': 'screen',
-        },
-    },
 }
 
 PIPELINE_JS = {
@@ -201,13 +190,6 @@ PIPELINE_JS = {
 }
 
 PIPELINE_YUI_BINARY = '/usr/local/bin/yuglify'
-
-# Payment
-# This must be set
-PAYPAL_IDENTITY_TOKEN = ''
-PAYPAL_RECEIVER_EMAIL = ''
-MANITY_PUBLIC_KEY = ''
-MANITY_PRIVATE_KEY = ''
 
 try:
     from local_settings import *
