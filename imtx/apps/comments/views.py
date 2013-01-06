@@ -29,6 +29,7 @@ def get_comment_cookie_meta(request):
     name = None
     email = None
     url = None
+    mail_notify = None
 
     if 'name' in request.COOKIES:
         name = request.COOKIES['name']
@@ -39,7 +40,13 @@ def get_comment_cookie_meta(request):
     if 'url' in request.COOKIES:
         url = request.COOKIES['url']
 
-    return {'name': name, 'email': email, 'url': url}
+    if 'mail_notify' in request.COOKIES:
+        mail_notify = request.COOKIES['mail_notify']
+
+    return {'name': name,
+            'email': email,
+            'url': url,
+            'mail_notify': mail_notify}
 
 def comment_list(request):
     page = get_page(request)
@@ -127,6 +134,8 @@ def post_comment(request, next = None):
     # Otherwise create the comment
     comment = form.get_comment_object()
     comment.parent_id = data['parent_id']
+    # I don't know why, it should be put here instead of forms.py
+    comment.mail_notify = data.get('mail_notify', False)
     comment.ip_address = request.META.get("REMOTE_ADDR", None)
     if request.user.is_authenticated():
         comment.user = request.user
@@ -158,7 +167,11 @@ def post_comment(request, next = None):
         response.set_cookie('email', comment.user_email, max_age = 31536000)
         response.set_cookie('url', comment.user_url, max_age = 31536000)
         response.set_cookie('name', comment.user_name, max_age = 31536000)
+        response.set_cookie('mail_notify', comment.mail_notify, max_age = 31536000)
     except:
         pass
+
+    if not data.get('mail_notify', False):
+        response.delete_cookie('mail_notify')
 
     return response

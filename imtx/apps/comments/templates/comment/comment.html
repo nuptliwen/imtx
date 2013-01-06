@@ -37,6 +37,11 @@
     {{ commentform.parent_id }}
     </p>
 
+    {% if not user.is_authenticated %}
+    <p>{{ commentform.mail_notify }}
+        <label for="url"><small>{% trans "Email me when someone replied" %}</small></label></p>
+    {% endif %}
+
     <p><input name="submit" type="image" src="/static/css/images/submit.png" id="submit" value="Submit Comment" />
     <input type="hidden" name="object_id" value="{{ object.id }}" /></p>
 </form>

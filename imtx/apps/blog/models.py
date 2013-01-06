@@ -7,8 +7,10 @@ from django.db.models import signals
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.contenttypes import generic
+from django.template.defaultfilters import linebreaksbr
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.fields.files import ImageFieldFile
+from django.core.mail import EmailMultiAlternatives
 
 from tagging.models import Tag
 from tagging.fields import TagField
@@ -286,5 +288,37 @@ signals.post_save.connect(
 def on_comment_save(sender, comment, *args, **kwargs):
     post = comment.object
     post.hit_comments()
+
+    if comment.parent_id != u'0' and comment.parent.mail_notify:
+        subject = _('Your comment at "%s" now has a reply') % comment.object.title
+        from_email = 'no-replay@imtx.me'
+        to_email = comment.parent.email
+        comment_dict = {
+            'your_content': comment.parent.content.replace('\n', '| '),
+            'your_content_html': linebreaksbr(comment.parent.content),
+            'reply_author': comment.user_name,
+            'reply_content': comment.content.replace('\n', '| '),
+            'reply_content_html': linebreaksbr(comment.content),
+            'url': comment.get_url()
+        }
+
+        text_content = _('''You said:
+| %(your_content)s
+
+%(reply_author)s replied:
+| %(reply_content)s
+
+Visit this link to view detail: %(url)s''' % comment_dict)
+
+        html_content = _('''You said:
+<blockquote>%(your_content_html)s</blockquote>
+<br />
+%(reply_author)s replied:
+<blockquote>%(reply_content_html)s</blockquote>
+<br />
+Visit this link to view detail: <a href="%(url)s">%(url)s</a>''' % comment_dict)
+        msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
 
 comment_save.connect(on_comment_save)

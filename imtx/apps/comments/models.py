@@ -238,6 +238,9 @@ class Comment(models.Model):
         }
         return _('Posted by %(user)s at %(date)s\n\n%(comment)s\n\nhttp://%(domain)s%(url)s') % d
 
+    def get_url(self):
+        return 'http://%s%s' % (self.site.domain, self.get_absolute_url())
+
     def get_title(self):
         return '%s said: %s' % (self.name, self.content)
 
