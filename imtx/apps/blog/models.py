@@ -291,8 +291,8 @@ def on_comment_save(sender, comment, *args, **kwargs):
 
     if comment.parent_id != u'0' and comment.parent.mail_notify:
         subject = _('Your comment at "%s" now has a reply') % comment.object.title
-        from_email = 'no-replay@imtx.me'
-        to_email = comment.parent.email
+        from_email = "IMTX <no-replay@imtx.me>"
+        to_email = "%s <%s>" % (comment.parent.user_name, comment.parent.email)
         comment_dict = {
             'your_content': comment.parent.content.replace('\n', '| '),
             'your_content_html': linebreaksbr(comment.parent.content),
