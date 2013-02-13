@@ -174,7 +174,7 @@ PIPELINE_CSS = {
           'css/style.css',
           'css/highlight.css',
         ),
-        'output_filename': 'css/imtx.css',
+        'output_filename': 'css/imtx-style.css',
         'extra_context': {
             'media': 'screen',
         },
