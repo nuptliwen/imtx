@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import re
+import json
 import random
 import datetime
 
@@ -20,28 +21,23 @@ def etree_to_dict(t):
     return d
 
 def process_request(request):
-    request_dict = etree_to_dict(etree.fromstring(request.raw_post_data))
     response_xml = ''
+    request_dict = etree_to_dict(etree.fromstring(request.raw_post_data))
+    # If has no content, save the whole dict to be future process
+    request_content = request_dict.get('Content', json.dumps(request_dict))
+
     user, created = WechatUser.objects.get_or_create(name=request_dict['FromUserName'])
-
-    request_content = request_dict.get('Content')
-
+    message_response = MessageResponse.objects.create(user=user,
+                                                      request_content=request_content)
     if request_content == 'Hello2BizUser':
-        message_response = MessageResponse.objects.create(message_type='hello',
-                user=user,
-                create_time=datetime.datetime.now(),
-                request_content=request_content,
-                response_content = u'Hello, 我是TualatriX! 感谢关注IMTX，你可以通过搜索关键字来随机查看我过去写的文章，尝试一下？如: Python。')
+        message_response.message_type = 'hello'
+        message_response.response_content = u'Hello, 我是TualatriX! 感谢关注IMTX，你可以通过搜索关键字来随机查看我过去写的文章，尝试一下？如: Python。'
         message_response.save()
 
         response_xml = message_response.build_response_xml()
     elif request_content.isdigit():
         content = int(request_content)
-        message_response = MessageResponse.objects.create(message_type='text',
-                user=user,
-                create_time=datetime.datetime.now(),
-                request_content=request_content,
-                response_content = u'AQI: %s, %s' % (aqi_pm25(request_content), aqi_category(aqi_pm25(request_content))))
+        message_response.response_content = u'AQI: %s, %s' % (aqi_pm25(request_content), aqi_category(aqi_pm25(request_content)))
         message_response.save()
 
         response_xml = message_response.build_response_xml()
@@ -57,14 +53,13 @@ def process_request(request):
                 article.count = article.count + 1
                 article.save()
 
-            message_response = MessageResponse.objects.create(message_type='news',
-                    user=user,
-                    create_time=datetime.datetime.now(),
-                    request_content=request_content,
-                    article=article)
+            message_response.message_type = 'news'
+            message_response.article = article
             message_response.save()
 
             response_xml = message_response.build_response_xml()
+    else:
+        message_response.save()
 
     if response_xml:
         return HttpResponse(response_xml, content_type='application/xml')
