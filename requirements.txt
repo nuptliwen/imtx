@@ -1,5 +1,6 @@
 PIL
 fabric
+lxml
 django==1.4.3
 south==0.7.6
 MySQL-python

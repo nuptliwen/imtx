@@ -1,4 +1,5 @@
 import os
+import re
 import Image
 
 from django.db import models
@@ -11,6 +12,7 @@ from django.template.defaultfilters import linebreaksbr
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.fields.files import ImageFieldFile
 from django.core.mail import EmailMultiAlternatives
+from django.utils.html import strip_tags, clean_html
 
 from tagging.models import Tag
 from tagging.fields import TagField
@@ -74,10 +76,8 @@ class Post(models.Model):
     tag = TagField()
 
     def save(self, *args, **kwargs):
-        try:
-            self.content = html.clean_html(self.content)
-        except:
-            pass
+        self.content = clean_html(self.content)
+
         super(Post, self).save(*args, **kwargs)
 
         # Initial the views and comments count to 0 if the PostMeta isn't available
@@ -167,6 +167,26 @@ class Post(models.Model):
             return False
         else:
             return True
+
+    def get_description(self, length=120):
+        return ''.join(strip_tags(self.content).split('\n'))[:length - 3] + u'...'
+
+    def get_media_url(self):
+        r_imtx_media = re.compile('''<img.*src="(http:\/\/imtx.me\/media\/\w+\/\d+\/\d+\/[-\w\d]+.(jpg|png))"''')
+        r_local_media = re.compile('''<img.*src="(\/media\/\w+\/\d+\/\d+\/[-\w\d]+.(jpg|png))"''')
+
+        try:
+            return r_imtx_media.findall(self.content)[0][0]
+        except:
+            pass
+
+        try:
+            local_url = r_local_media.findall(self.content)[0][0]
+            return 'http://imtx.me' + local_url
+        except:
+            pass
+
+        return ''
 
 class PostMeta(models.Model):
     post = models.ForeignKey(Post)

@@ -137,6 +137,7 @@ INSTALLED_APPS = (
     'tagging',
     'south',
     'pipeline',
+    'wechat',
 )
 
 # Cache
