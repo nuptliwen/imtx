@@ -1,8 +1,8 @@
 # coding: utf-8
 
 import re
-import time
 import random
+import datetime
 
 from lxml import etree
 from django.http import HttpResponse
@@ -11,6 +11,7 @@ from django.contrib.sites.models import Site
 
 from imtx.apps.blog.models import Post
 from imtx.views import aqi_pm25, aqi_category
+from wechat.models import WechatUser, Article, MessageResponse
 
 def etree_to_dict(t):
     d = {}
@@ -20,65 +21,50 @@ def etree_to_dict(t):
 
 def process_request(request):
     request_dict = etree_to_dict(etree.fromstring(request.raw_post_data))
-    response_dict = {'FromUserName': 'imtx-me',
-                     'ToUserName': request_dict['FromUserName'],
-                     'CreateTime': int(time.time())}
     response_xml = ''
-    content = request_dict['Content']
+    user, created = WechatUser.objects.get_or_create(name=request_dict['FromUserName'])
 
-    if content == 'Hello2BizUser':
-        response_dict['Content'] = u'Hello, 我是TualatriX! 感谢关注IMTX，你可以通过搜索关键字来随机查看我过去写的文章，尝试一下？如: Python。'
-        response_xml = '''<xml>
-                          <ToUserName><![CDATA[%(ToUserName)s]]></ToUserName>
-                          <FromUserName><![CDATA[%(FromUserName)s]]></FromUserName>
-                          <CreateTime>%(CreateTime)s</CreateTime>
-                          <MsgType><![CDATA[text]]></MsgType>
-                          <Content><![CDATA[%(Content)s]]></Content>
-                          <FuncFlag>0</FuncFlag>
-                          </xml>''' % response_dict
-    elif content.isdigit():
-        content = int(content)
-        response_dict['Content'] = u'AQI: %s, %s' % (aqi_pm25(content), aqi_category(aqi_pm25(content)))
-        response_xml = '''<xml>
-                          <ToUserName><![CDATA[%(ToUserName)s]]></ToUserName>
-                          <FromUserName><![CDATA[%(FromUserName)s]]></FromUserName>
-                          <CreateTime>%(CreateTime)s</CreateTime>
-                          <MsgType><![CDATA[text]]></MsgType>
-                          <Content><![CDATA[%(Content)s]]></Content>
-                          <FuncFlag>0</FuncFlag>
-                          </xml>''' % response_dict
+    request_content = request_dict.get('Content')
 
-        return HttpResponse(response_xml, content_type='application/xml')
-    else:
-        content = request_dict['Content']
-        qset = (Q(title__icontains=content) | Q(title__icontains=content))
+    if request_content == 'Hello2BizUser':
+        message_response = MessageResponse.objects.create(message_type='hello',
+                user=user,
+                create_time=datetime.datetime.now(),
+                request_content=request_content,
+                response_content = u'Hello, 我是TualatriX! 感谢关注IMTX，你可以通过搜索关键字来随机查看我过去写的文章，尝试一下？如: Python。')
+        message_response.save()
+
+        response_xml = message_response.build_response_xml()
+    elif request_content.isdigit():
+        content = int(request_content)
+        message_response = MessageResponse.objects.create(message_type='text',
+                user=user,
+                create_time=datetime.datetime.now(),
+                request_content=request_content,
+                response_content = u'AQI: %s, %s' % (aqi_pm25(request_content), aqi_category(aqi_pm25(request_content))))
+        message_response.save()
+
+        response_xml = message_response.build_response_xml()
+    elif request_content:
+        qset = (Q(title__icontains=request_content) | Q(title__icontains=request_content))
         posts = Post.objects.filter(qset, status='publish').distinct()
 
         if posts:
             post = posts[random.randint(0, posts.count() - 1)]
-            response_dict['Title'] = post.title
-            response_dict['Description'] = post.get_description()
-            response_dict['PicUrl'] = post.get_media_url()
-            response_dict['Url'] = 'http://%s/wechat/post/%d.html' % (Site.objects.get_current().domain, post.id)
+            article, created = Article.objects.get_or_create(post=post)
 
-            response_xml = '''<xml>
-                             <ToUserName><![CDATA[%(ToUserName)s]]></ToUserName>
-                             <FromUserName><![CDATA[%(FromUserName)s]]></FromUserName>
-                             <CreateTime>%(CreateTime)s</CreateTime>
-                             <MsgType><![CDATA[news]]></MsgType>
-                             <ArticleCount>1</ArticleCount>
-                             <Articles>
-                             <item>
-                             <Title><![CDATA[%(Title)s]]></Title> 
-                             <Description><![CDATA[%(Description)s]]></Description>
-                             <PicUrl><![CDATA[%(PicUrl)s]]></PicUrl>
-                             <Url><![CDATA[%(Url)s]]></Url>
-                             </item>
-                             </Articles>
-                             <FuncFlag>1</FuncFlag>
-                             </xml>''' % response_dict
+            if not created:
+                article.count = article.count + 1
+                article.save()
 
-            return HttpResponse(response_xml, content_type='application/xml')
+            message_response = MessageResponse.objects.create(message_type='news',
+                    user=user,
+                    create_time=datetime.datetime.now(),
+                    request_content=request_content,
+                    article=article)
+            message_response.save()
+
+            response_xml = message_response.build_response_xml()
 
     if response_xml:
         return HttpResponse(response_xml, content_type='application/xml')
