@@ -88,7 +88,7 @@ class MessageResponse(models.Model):
                               <ToUserName><![CDATA[%(to_user_name)s]]></ToUserName>
                               <FromUserName><![CDATA[%(from_user_name)s]]></FromUserName>
                               <CreateTime>%(timestamp)s</CreateTime>
-                              <MsgType><![CDATA[message_type]]></MsgType>
+                              <MsgType><![CDATA[text]]></MsgType>
                               <Content><![CDATA[%(response_content)s]]></Content>
                               <FuncFlag>0</FuncFlag>
                               </xml>''' % self
@@ -97,7 +97,7 @@ class MessageResponse(models.Model):
                              <ToUserName><![CDATA[%(to_user_name)s]]></ToUserName>
                              <FromUserName><![CDATA[%(from_user_name)s]]></FromUserName>
                              <CreateTime>%(timestamp)s</CreateTime>
-                             <MsgType><![CDATA[message_type]]></MsgType>
+                             <MsgType><![CDATA[news]]></MsgType>
                              <ArticleCount>1</ArticleCount>
                              <Articles>
                              <item>
