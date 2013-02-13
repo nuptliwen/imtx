@@ -36,8 +36,8 @@ def process_request(request):
 
         response_xml = message_response.build_response_xml()
     elif request_content.isdigit():
-        content = int(request_content)
-        message_response.response_content = u'AQI: %s, %s' % (aqi_pm25(request_content), aqi_category(aqi_pm25(request_content)))
+        pm25 = int(request_content)
+        message_response.response_content = u'AQI: %s, %s' % (aqi_pm25(pm25), aqi_category(aqi_pm25(pm25)))
         message_response.save()
 
         response_xml = message_response.build_response_xml()
