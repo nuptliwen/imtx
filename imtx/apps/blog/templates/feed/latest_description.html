@@ -1,4 +1,6 @@
-{% load highlight %}
+{% load highlight staticfiles %}
 {% autoescape off %}
 {{ obj.content|do_highlight }}
+<p align="center"><strong>欢迎通过微信订阅IMTX</strong></p>
+<p align="center"><img width="129px" height="129px" src="{% static "img/imtx-qrcode.jpg" %}" alt="imtx-qrcode"/></p>
 {% endautoescape %}

@@ -607,10 +607,12 @@ img.alignleft {
     color: #0954A6;
 }
 
+/*
 #sidebar ul li img {
     width: 200px;
     height: 78px;
 }
+*/
 
 #sidebar ul p {
     margin: 5px 0 8px;
@@ -696,7 +698,7 @@ blockquote cite {
 
 .twitter{
     margin-top: 10px;
-    background: url('/static/img/twitter-logo.png') no-repeat top left;
+    background: url('../img/twitter-logo.png') no-repeat top left;
     padding: 8px 0px 0px 36px;
     height: 32px;
     display: block;
@@ -704,7 +706,7 @@ blockquote cite {
 
 .rss {
     margin-top: 10px;
-    background: url('/static/img/rss-logo.png') no-repeat top left;
+    background: url('../img/rss-logo.png') no-repeat top left;
     padding: 8px 0px 0px 36px;
     height: 32px;
     display: block;

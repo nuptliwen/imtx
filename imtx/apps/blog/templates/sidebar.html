@@ -1,53 +1,52 @@
-{% load sidebar i18n %}
+{% load sidebar i18n staticfiles %}
 <div id="sidebar">
-	<ul>
-		<li>
-		<h2>{% trans "About" %}</h2>
-		<!--		<span class="twitter"><a href="http://twitter.com/tualatrix">Follow IMTX</a></span>-->
-		<span class="rss"><a href="http://feeds.feedburner.com/tualatrix" target="_blank">订阅IMTX</a></span>
-		</li>
-		<li>
-		<h2>{% trans "Recent Posts" %}</h2>
-		{% get_recent_posts %}
-		</li>
+  <ul>
+    <li>
+      <h2>{% trans "Wechat" %}</h2>
+      <p align="center"><img width="129px" height="129px" src="{% static "img/imtx-qrcode.jpg" %}" alt="imtx-qrcode"/></p>
+    </li>
+    <li>
+      <h2>{% trans "Recent Posts" %}</h2>
+      {% get_recent_posts %}
+    </li>
 
-		<li>
-		<h2>{% trans "Recent Comments" %}</h2>
-		{% get_recent_comments %}
-		</li>
+    <li>
+      <h2>{% trans "Recent Comments" %}</h2>
+      {% get_recent_comments %}
+    </li>
 
-		<li>
-		<h2>{% trans "Recent Pingbacks" %}</h2>
-		{% get_recent_pingbacks %}
-		</li>
+    <li>
+      <h2>{% trans "Recent Pingbacks" %}</h2>
+      {% get_recent_pingbacks %}
+    </li>
 
-		<li>
-		<h2>{% trans "Links" %}</h2>
-		{% get_links %}
-		</li>
+    <li>
+      <h2>{% trans "Links" %}</h2>
+      {% get_links %}
+    </li>
 
-		<li>
-		<h2>Categories</h2>
-		{% get_categories %}
-		</li>
-		
-		<li>
-		<h2>Archive</h2>
-		{% get_archive %}
-		</li>
+    <li>
+      <h2>Categories</h2>
+      {% get_categories %}
+    </li>
 
-		<li>
-		<h2>Meta</h2>
-			<ul>
-				{% if user.is_staff %}
-				<li><a href="/admin/">Admin</a></li>
-				{% else %}
-				<li><a href="/admin/">Login</a></li>
-				{% endif %}
-				{% if user.is_authenticated %}
-				<li><a href="/admin/logout/">Logout</a></li>
-				{% endif %}
-			</ul>
-		</li>
-	</ul>
+    <li>
+      <h2>Archive</h2>
+      {% get_archive %}
+    </li>
+
+    <li>
+      <h2>Meta</h2>
+      <ul>
+        {% if user.is_staff %}
+        <li><a href="/admin/">Admin</a></li>
+        {% else %}
+        <li><a href="/admin/">Login</a></li>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <li><a href="/admin/logout/">Logout</a></li>
+        {% endif %}
+      </ul>
+    </li>
+  </ul>
 </div>
