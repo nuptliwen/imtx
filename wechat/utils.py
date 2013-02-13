@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import re
 import time
 import random
@@ -21,9 +23,20 @@ def process_request(request):
     response_dict = {'FromUserName': 'imtx-me',
                      'ToUserName': request_dict['FromUserName'],
                      'CreateTime': int(time.time())}
+    response_xml = ''
     content = request_dict['Content']
 
-    if content.isdigit():
+    if content == 'Hello2BizUser':
+        response_dict['Content'] = u'Hello, 我是TualatriX! 感谢关注IMTX，你可以通过搜索关键字来随机查看我过去写的文章，尝试一下？如: Python。'
+        response_xml = '''<xml>
+                          <ToUserName><![CDATA[%(ToUserName)s]]></ToUserName>
+                          <FromUserName><![CDATA[%(FromUserName)s]]></FromUserName>
+                          <CreateTime>%(CreateTime)s</CreateTime>
+                          <MsgType><![CDATA[text]]></MsgType>
+                          <Content><![CDATA[%(Content)s]]></Content>
+                          <FuncFlag>0</FuncFlag>
+                          </xml>''' % response_dict
+    elif content.isdigit():
         content = int(content)
         response_dict['Content'] = u'AQI: %s, %s' % (aqi_pm25(content), aqi_category(aqi_pm25(content)))
         response_xml = '''<xml>
@@ -67,4 +80,7 @@ def process_request(request):
 
             return HttpResponse(response_xml, content_type='application/xml')
 
-    return HttpResponse('Hello World!')
+    if response_xml:
+        return HttpResponse(response_xml, content_type='application/xml')
+    else:
+        return HttpResponse('Hello World!')
