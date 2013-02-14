@@ -7,6 +7,9 @@ from django.utils.translation import ugettext_lazy as _
 
 from imtx.apps.blog.models import Post
 
+def sort_articles(x, y):
+    return cmp(y.post.id, x.post.id)
+
 class WechatUser(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
@@ -119,7 +122,10 @@ class MessageResponse(models.Model):
                               </xml>''' % self
         elif self.message_type == 'news':
             articles_xml = ''
-            for article in self.articles.all():
+            articles = list(self.articles.all())
+            articles.sort(cmp=sort_articles)
+
+            for article in articles:
                 articles_xml = articles_xml + '''<item>
                              <Title><![CDATA[%(article_title)s]]></Title>
                              <Description><![CDATA[%(article_desc)s]]></Description>
