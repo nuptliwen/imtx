@@ -20,6 +20,29 @@ class Article(models.Model):
     def __unicode__(self):
         return u"Article: %s" % self.post.title
 
+    def __getitem__(self, key):
+        if hasattr(self, key):
+            return getattr(self, key)
+        else:
+            raise KeyError('No "%s" key available for this article' % key)
+
+    @property
+    def article_title(self):
+        return self.post.title
+
+    @property
+    def article_desc(self):
+        return self.post.get_description()
+
+    @property
+    def article_pic_url(self):
+        return self.post.get_media_url()
+
+    @property
+    def article_url(self):
+        return 'http://%s/wechat/post/%d.html' % (Site.objects.get_current().domain, self.post.id)
+
+
 class MessageResponse(models.Model):
     MESSAGE_TYPE_CHOICES = (
         ('hello', _('Hello Message')),
@@ -30,7 +53,7 @@ class MessageResponse(models.Model):
     message_type = models.CharField(max_length=20, default='text', choices=MESSAGE_TYPE_CHOICES)
     create_time = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(WechatUser)
-    article = models.ForeignKey(Article, blank=True, null=True)
+    articles = models.ManyToManyField(Article, blank=True, null=True)
     request_content = models.TextField(blank=True)
     response_content = models.TextField(blank=True)
 
@@ -52,24 +75,26 @@ class MessageResponse(models.Model):
         return self.user.name
 
     @property
-    def article_title(self):
-        return self.article.post.title
-
-    @property
-    def article_desc(self):
-        return self.article.post.get_description()
-
-    @property
-    def article_pic_url(self):
-        return self.article.post.get_media_url()
-
-    @property
-    def article_url(self):
-        return 'http://%s/wechat/post/%d.html' % (Site.objects.get_current().domain, self.article.post.id)
+    def article_count(self):
+        return self.articles.count()
 
     @property
     def timestamp(self):
         return time.mktime(self.create_time.timetuple())
+
+    def create_articles_from_posts(self, posts):
+        if posts:
+            self.message_type = 'news'
+
+            for post in posts:
+                article, created = Article.objects.get_or_create(post=post)
+
+                if not created:
+                    article.count = article.count + 1
+                    article.save()
+
+                self.articles.add(article)
+                self.save()
 
     def build_response_xml(self):
         response_xml = ''
@@ -93,21 +118,27 @@ class MessageResponse(models.Model):
                               <FuncFlag>0</FuncFlag>
                               </xml>''' % self
         elif self.message_type == 'news':
-            response_xml = '''<xml>
-                             <ToUserName><![CDATA[%(to_user_name)s]]></ToUserName>
-                             <FromUserName><![CDATA[%(from_user_name)s]]></FromUserName>
-                             <CreateTime>%(timestamp)s</CreateTime>
-                             <MsgType><![CDATA[news]]></MsgType>
-                             <ArticleCount>1</ArticleCount>
-                             <Articles>
-                             <item>
+            articles_xml = ''
+            for article in self.articles.all():
+                articles_xml = articles_xml + '''<item>
                              <Title><![CDATA[%(article_title)s]]></Title>
                              <Description><![CDATA[%(article_desc)s]]></Description>
                              <PicUrl><![CDATA[%(article_pic_url)s]]></PicUrl>
                              <Url><![CDATA[%(article_url)s]]></Url>
                              </item>
-                             </Articles>
+                             ''' % article
+
+            response_xml = '''<xml>
+                             <ToUserName><![CDATA[%(to_user_name)s]]></ToUserName>
+                             <FromUserName><![CDATA[%(from_user_name)s]]></FromUserName>
+                             <CreateTime>%(timestamp)s</CreateTime>
+                             <MsgType><![CDATA[news]]></MsgType>
+                             <ArticleCount>%(article_count)d</ArticleCount>
+                             <Articles>
+                             ''' % self + \
+                             articles_xml + \
+                           '''</Articles>
                              <FuncFlag>1</FuncFlag>
-                             </xml>''' % self
+                             </xml>'''
 
         return response_xml
