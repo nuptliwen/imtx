@@ -51,16 +51,17 @@ def process_request(request):
         posts = Post.objects.filter(qset, status='publish').distinct()
 
         if posts:
-            post_count = posts.count()
+            post = posts[random.randint(0, posts.count() - 1)]
+            article, created = Article.objects.get_or_create(post=post)
 
-            if post_count > 3:
-                post_ids = random.sample(range(post_count), 3)
-                new_posts = []
-                for id in post_ids:
-                    new_posts.append(posts[id])
-                posts = new_posts
+            if not created:
+                article.count = article.count + 1
+                article.save()
 
-            message_response.create_articles_from_posts(posts)
+            message_response.message_type = 'news'
+            message_response.articles.add(article)
+            message_response.save()
+
             response_xml = message_response.build_response_xml()
     else:
         message_response.save()
