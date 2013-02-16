@@ -50,6 +50,7 @@ list-style-position:inside;
   {% autoescape off %}
   {{ post.content|linebreaks }}
   {% endautoescape %}
+  <p><a href="{{ post.get_absolute_url }}">浏览标准页面</a></p>
 </div>
 
 </div>
