@@ -125,8 +125,8 @@ class Post(models.Model):
                                                       'year': self.date.year}
 
     def get_comments_info(self):
-        count = PostMeta.objects.get(post=self.id, meta_key='comments_count').meta_value
-        if int(count):
+        count = int(PostMeta.objects.get(post=self.id, meta_key='comments_count').meta_value)
+        if count:
             return ungettext('%(count)d Comment', '%(count)d Comments', count) % {'count': count}
         else:
             return _('No Comment')
