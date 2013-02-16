@@ -10,6 +10,7 @@ from django.contrib.sites.models import Site
 from django.contrib.contenttypes import generic
 from django.template.defaultfilters import linebreaksbr
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ungettext
 from django.db.models.fields.files import ImageFieldFile
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags, clean_html
@@ -119,8 +120,16 @@ class Post(models.Model):
         pm.meta_value = str(int(pm.meta_value) + 1)
         pm.save()
 
-    def get_comments_count(self):
-        return PostMeta.objects.get(post=self.id, meta_key='comments_count').meta_value
+    def get_publish_info(self):
+        return _("Post by %(author)s at %(year)s") % {'author': self.get_author(),
+                                                      'year': self.date.year}
+
+    def get_comments_info(self):
+        count = PostMeta.objects.get(post=self.id, meta_key='comments_count').meta_value
+        if int(count):
+            return ungettext('%(count)d Comment', '%(count)d Comments', count) % {'count': count}
+        else:
+            return _('No Comment')
 
     def hit_comments(self):
         pm = PostMeta.objects.get(post=self, meta_key='comments_count')
@@ -284,7 +293,8 @@ class Media(models.Model):
         super(Media, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return _('<Media: %s, uploaded at %s>') % (self.title, self.date.strftime('%I:%M%p, %Y/%m/%d'))
+        return _('%(title)s, uploaded at %(date)s') % {'title': self.title,
+                                                       'date': self.date.strftime('%I:%M%p, %Y/%m/%d')}
 
     def get_thumb_url(self):
         try:

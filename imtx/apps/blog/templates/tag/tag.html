@@ -15,7 +15,7 @@
 		<div class="clear"></div>
 		<div class="entry">
 			{% autoescape off %}
-			{{ post.get_excerpt }} {% if post.get_pagebreak %}<a href="{{ post.get_absolute_url }}#more">Read More...</a>{% endif %}
+            {{ post.get_excerpt }} {% if post.get_pagebreak %}<a href="{{ post.get_absolute_url }}#more">{% trans "Read More..." %}</a>{% endif %}
 			{% endautoescape %}
 		</div>
 		</div>

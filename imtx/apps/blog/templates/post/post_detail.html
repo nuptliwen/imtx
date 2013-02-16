@@ -22,7 +22,7 @@
 
         <p>
         {% if post.get_tags %}
-        <div id="tags">Tags: {% for tag in post.get_tags %}{% if forloop.last %}<a href="{{ tag.get_absolute_url }}">{{ tag.name }}</a>. {% else %}<a href="{{ tag.get_absolute_url }}">{{ tag.name }}</a>, {% endif %}{% endfor %}</div>
+        <div id="tags">{% trans "Tag:" %} {% for tag in post.get_tags %}{% if forloop.last %}<a href="{{ tag.get_absolute_url }}">{{ tag.name }}</a>. {% else %}<a href="{{ tag.get_absolute_url }}">{{ tag.name }}</a>, {% endif %}{% endfor %}</div>
         {% endif %}
         </p>
         <p class="meta"> 
@@ -37,6 +37,6 @@
     {% if post.allow_comment %}
     {% include "comment/comment.html" %}
     {% else %}
-    <p class="nocomments">Comments are closed.</p>
+    <p class="nocomments">{% trans "Comments are closed." %}</p>
     {% endif %}
 {% endblock %}
