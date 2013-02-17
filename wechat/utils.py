@@ -32,7 +32,7 @@ def process_request(request):
                                                       request_content=request_content)
     if request_content == 'Hello2BizUser':
         message_response.message_type = 'hello'
-        message_response.response_content = u'Hello, 我是TualatriX! 感谢关注IMTX，你可以通过发送「top」（不区分大小写）来查看最新三篇文章，或者搜索关键字来随机查看我过去写的文章，尝试一下？如: Python。'
+        message_response.response_content = u'Hello, 我是TualatriX! 感谢关注IMTX，你可以通过发送「top(不区分大小写) + 数字翻页(可选)」来查看近三篇文章，或者搜索关键字来随机查看我过去写的文章，尝试一下？如: top, top 1, Python...'
         message_response.save()
 
         response_xml = message_response.build_response_xml()
