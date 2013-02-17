@@ -22,6 +22,7 @@ def etree_to_dict(t):
 
 def process_request(request):
     response_xml = ''
+    top_pattern = re.compile('\s*top\s*(?P<page>\d+)?\s*', re.I)
     request_dict = etree_to_dict(etree.fromstring(request.raw_post_data))
     # If has no content, save the whole dict to be future process
     request_content = request_dict.get('Content', json.dumps(request_dict))
@@ -41,8 +42,9 @@ def process_request(request):
         message_response.save()
 
         response_xml = message_response.build_response_xml()
-    elif request_content.lower() == 'top':
-        posts = Post.objects.get_post()[:3]
+    elif top_pattern.search(request_content):
+        page_string = top_pattern.search(request_content).group('page') or '0'
+        posts = Post.objects.get_post()[int(page_string) * 3:(int(page_string) + 1) * 3]
         if posts:
             message_response.create_articles_from_posts(posts)
             response_xml = message_response.build_response_xml()
