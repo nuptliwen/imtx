@@ -18,7 +18,7 @@ Author URI: http://www.hoofei.com/
 /* General Start */
 
 body {
-    font-size: 14px;
+    font-size: 12px; /* Resets 1em to 10px */
     font-family: Helvetica,Arial,Verdana,Sans-serif;
     background: #5D6E81;
     color: #505050;
@@ -300,6 +300,7 @@ html>body .entry li {
 
 .post {
     margin: 20px 0;
+    font-size: 14px;
     text-align: left;
 }
 
