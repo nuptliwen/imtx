@@ -2,7 +2,6 @@ import os
 from django.conf import settings
 from django.contrib import admin
 from django.conf.urls.defaults import *
-from django.views.generic import list_detail
 from django.contrib.sitemaps import Sitemap
 from django.contrib.sitemaps import views as sitemap_views
 from django.views.decorators.cache import cache_page
