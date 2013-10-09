@@ -52,6 +52,7 @@ def sync():
     local('gunzip /tmp/%s' % base_name)
     local('mysql -uroot -p%s %s < /tmp/%s' % (password, database, base_name[:-3]))
     local('rm /tmp/%s' % base_name[:-3])
+    local("""echo 'EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"\nCACHES = {"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache"}}' >> imtx/local_settings.py""", capture=False)
 
 def install():
     local('pip install -r requirements.txt', capture=False)
