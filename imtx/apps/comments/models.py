@@ -82,11 +82,12 @@ class Comment(models.Model):
     def save(self, force_insert=False, force_update=False):
         if self.date is None:
             self.date = datetime.datetime.now()
+
         super(Comment, self).save(force_insert, force_update)
         comment_save.send(sender = self.__class__, comment = self, object = self.object)
 
     def has_parent(self):
-        return self.parent_id > 0
+        return bool(self.parent_id)
 
     def get_parent(self):
         if self.has_parent():
