@@ -26,8 +26,8 @@ class CommentForm(forms.Form):
     content_type  = forms.CharField(widget=forms.HiddenInput)
     object_pk     = forms.CharField(widget=forms.HiddenInput)
 
-    parent_id        = forms.IntegerField(widget = forms.HiddenInput, initial = 0)
-    mail_notify = forms.BooleanField(initial = False, required = False)
+    parent_id     = forms.IntegerField(widget=forms.HiddenInput, required=False)
+    mail_notify   = forms.BooleanField(initial=False, required=False)
     timestamp     = forms.IntegerField(widget = forms.HiddenInput)
     security_hash = forms.CharField(min_length=40, max_length=40, widget=forms.HiddenInput)
 
@@ -61,7 +61,8 @@ class CommentForm(forms.Form):
             site_id      = settings.SITE_ID,
             is_public    = True,
             is_removed   = False,
-            parent_id    = 0,
+            mail_notify  = self.cleaned_data['mail_notify'],
+            parent_id    = self.cleaned_data["parent_id"],
         )
 
         # Check that this comment isn't duplicate. (Sometimes people post comments

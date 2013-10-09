@@ -133,9 +133,7 @@ def post_comment(request, next = None):
 
     # Otherwise create the comment
     comment = form.get_comment_object()
-    comment.parent_id = data['parent_id']
-    # I don't know why, it should be put here instead of forms.py
-    comment.mail_notify = data.get('mail_notify', False)
+
     comment.ip_address = request.META.get("REMOTE_ADDR", None)
     if request.user.is_authenticated():
         comment.user = request.user

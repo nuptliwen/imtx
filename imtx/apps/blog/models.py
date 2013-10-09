@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.contenttypes import generic
 from django.template.defaultfilters import linebreaksbr
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 from django.utils.translation import ungettext
 from django.db.models.fields.files import ImageFieldFile
 from django.core.mail import EmailMultiAlternatives
@@ -322,7 +322,7 @@ def on_comment_save(sender, comment, *args, **kwargs):
     subject = _('Your comment at "%s" now has a reply') % comment.object.title
     from_email = "IMTX <no-replay@imtx.me>"
 
-    if comment.parent_id != u'0' and comment.parent.mail_notify:
+    if comment.has_parent() and comment.parent.mail_notify:
         to_email = "%s <%s>" % (comment.parent.user_name, comment.parent.email)
 
         comment_dict = {

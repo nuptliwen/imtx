@@ -86,11 +86,11 @@ class Comment(models.Model):
         comment_save.send(sender = self.__class__, comment = self, object = self.object)
 
     def has_parent(self):
-        return bool(self.parent_id)
+        return self.parent_id > 0
 
     def get_parent(self):
-        if self.parent_id:
-            return Comment.objects.get(pk = self.parent_id)
+        if self.has_parent():
+            return Comment.objects.get(pk=self.parent_id)
         else:
             return None
 
