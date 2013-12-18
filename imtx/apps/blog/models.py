@@ -76,6 +76,9 @@ class Post(models.Model):
     objects = PostManager()
     tag = TagField()
 
+    def is_odd(self):
+        return self.id % 2 == 0
+
     def save(self, *args, **kwargs):
         self.content = clean_html(self.content)
 
