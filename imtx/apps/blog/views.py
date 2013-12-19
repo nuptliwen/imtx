@@ -1,5 +1,5 @@
 from django.http import Http404, HttpResponseRedirect, QueryDict
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from django.db.models import Q
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404

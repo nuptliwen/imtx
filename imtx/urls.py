@@ -1,7 +1,7 @@
 import os
 from django.conf import settings
 from django.contrib import admin
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from django.contrib.sitemaps import Sitemap
 from django.contrib.sitemaps import views as sitemap_views
 from django.views.decorators.cache import cache_page
@@ -27,7 +27,7 @@ sitemaps = {
 }
 
 urlpatterns = patterns('',
-    (r'^sitemap.xml$', cache_page(sitemap_views.sitemap, 60 * 60 * 6), {'sitemaps': sitemaps}),
+    (r'^sitemap.xml$', cache_page(60 * 60 * 6)(sitemap_views.sitemap),  {'sitemaps': sitemaps}),
 #    (r'^zhejiangpm25$', 'imtx.views.zhejiangpm25'),
     (r'^admin/', include(admin.site.urls)),
     (r'^wechat/', include('wechat.urls')),

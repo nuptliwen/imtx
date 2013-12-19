@@ -1,9 +1,9 @@
 #coding: utf-8
 import urllib
+import json
 from collections import OrderedDict
 
 from django.http import HttpResponse
-from django.utils import simplejson
 
 from BeautifulSoup import BeautifulSoup
 
@@ -68,5 +68,5 @@ def get_pm25_dict():
     return data
 
 def zhejiangpm25(request):
-    response = simplejson.dumps(get_pm25_dict())
+    response = json.dumps(get_pm25_dict())
     return HttpResponse(response, mimetype="application/json")
