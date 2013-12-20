@@ -23,7 +23,7 @@ def etree_to_dict(t):
 def process_request(request):
     response_xml = ''
     top_pattern = re.compile('\s*top\s*(?P<page>\d+)?\s*', re.I)
-    request_dict = etree_to_dict(etree.fromstring(request.raw_post_data))
+    request_dict = etree_to_dict(etree.fromstring(request.body))
     # If has no content, save the whole dict to be future process
     request_content = request_dict.get('Content', json.dumps(request_dict))
 
