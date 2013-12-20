@@ -192,6 +192,8 @@ PIPELINE_JS = {
 
 PIPELINE_YUI_BINARY = '/usr/local/bin/yuglify'
 
+ALLOWED_HOSTS = [u'.imtx.me', u'imtx.me.']
+
 try:
     from local_settings import *
 except ImportError, e:
