@@ -322,22 +322,23 @@ def on_comment_save(sender, comment, *args, **kwargs):
     post = comment.object
     post.hit_comments()
 
-    subject = _('Your comment at "%s" now has a reply') % comment.object.title
-    from_email = "IMTX <no-replay@imtx.me>"
+    if comment.is_public and comment.user_name != 'TualatriX':
+        subject = _('Your comment at "%s" now has a reply') % comment.object.title
+        from_email = "IMTX <no-replay@imtx.me>"
 
-    if comment.has_parent() and comment.parent.mail_notify:
-        to_email = "%s <%s>" % (comment.parent.user_name, comment.parent.email)
+        if comment.has_parent() and comment.parent.mail_notify:
+            to_email = "%s <%s>" % (comment.parent.user_name, comment.parent.email)
 
-        comment_dict = {
-            'your_content': comment.parent.content.replace('\n', '| '),
-            'your_content_html': linebreaksbr(comment.parent.content),
-            'reply_author': comment.user_name,
-            'reply_content': comment.content.replace('\n', '| '),
-            'reply_content_html': linebreaksbr(comment.content),
-            'url': comment.get_url()
-        }
+            comment_dict = {
+                'your_content': comment.parent.content.replace('\n', '| '),
+                'your_content_html': linebreaksbr(comment.parent.content),
+                'reply_author': comment.user_name,
+                'reply_content': comment.content.replace('\n', '| '),
+                'reply_content_html': linebreaksbr(comment.content),
+                'url': comment.get_url()
+            }
 
-        text_content = _('''You said:
+            text_content = _('''You said:
 | %(your_content)s
 
 %(reply_author)s replied:
@@ -345,34 +346,34 @@ def on_comment_save(sender, comment, *args, **kwargs):
 
 Visit this link to view detail: %(url)s''' % comment_dict)
 
-        html_content = _('''You said:
+            html_content = _('''You said:
 <blockquote>%(your_content_html)s</blockquote>
 <br />
 %(reply_author)s replied:
 <blockquote>%(reply_content_html)s</blockquote>
 <br />
 Visit this link to view detail: <a href="%(url)s">%(url)s</a>''' % comment_dict)
-    else:
-        to_email = "%s <%s>" % (settings.ADMINS[0][0], settings.ADMINS[0][1])
-        comment_dict = {
-            'reply_author': comment.user_name,
-            'reply_content': comment.content.replace('\n', '| '),
-            'reply_content_html': linebreaksbr(comment.content),
-            'url': comment.get_url()
-        }
+        else:
+            to_email = "%s <%s>" % (settings.ADMINS[0][0], settings.ADMINS[0][1])
+            comment_dict = {
+                'reply_author': comment.user_name,
+                'reply_content': comment.content.replace('\n', '| '),
+                'reply_content_html': linebreaksbr(comment.content),
+                'url': comment.get_url()
+            }
 
-        text_content = _('''%(reply_author)s replied:
+            text_content = _('''%(reply_author)s replied:
 | %(reply_content)s
 
 Visit this link to view detail: %(url)s''' % comment_dict)
 
-        html_content = _('''%(reply_author)s replied:
+            html_content = _('''%(reply_author)s replied:
 <blockquote>%(reply_content_html)s</blockquote>
 <br />
 Visit this link to view detail: <a href="%(url)s">%(url)s</a>''' % comment_dict)
 
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
-    msg.attach_alternative(html_content, "text/html")
-    msg.send()
+        msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
 
 comment_save.connect(on_comment_save)
