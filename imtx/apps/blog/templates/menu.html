@@ -10,6 +10,11 @@
     {% else %}
     <li class="page_item"><a href="/comments/" title="{% trans "Comments" %}">{% trans "Comments" %}</a></li>
 {% endifequal %}
+{% if current == 'stats' %}
+  <li class="current_page_item"><a href="/stats/" title="{% trans "Stats" %}">{% trans "Stats" %}</a></li>
+  {% else %}
+  <li class="page_item"><a href="/stats/" title="{% trans "Stats" %}">{% trans "Stats" %}</a></li>
+{% endif %}
 {% for menu_item in menus %}{% ifequal current menu_item.slug %}
 <li class="current_page_item"><a href="/{{ menu_item.slug }}/" title="{{ menu_item.title }}">{{ menu_item.title }}</a></li>
 	{% else %}

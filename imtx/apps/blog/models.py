@@ -76,6 +76,9 @@ class Post(models.Model):
     objects = PostManager()
     tag = TagField()
 
+    class Meta:
+        get_latest_by = "date"
+
     def is_odd(self):
         return self.id % 2 == 0
 

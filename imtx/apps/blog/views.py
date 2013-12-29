@@ -9,6 +9,7 @@ from django.forms.util import ErrorList
 from django.utils import html
 from django.core import urlresolvers
 from django.views.decorators.vary import vary_on_headers
+from django.views.decorators.cache import cache_page
 
 from tagging.models import Tag, TaggedItem
 
@@ -45,6 +46,39 @@ def single_post(request, post_id):
                 'comment_meta': get_comment_cookie_meta(request),
                 },
                 context_instance=RequestContext(request),
+            )
+
+def single_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if not request.user.is_staff and not post.is_public():
+        raise Http404
+
+    post.hit_views()
+
+    return render_to_response('post/post_detail.html', {
+                'post': post,
+                'comment_meta': get_comment_cookie_meta(request),
+                },
+                context_instance=RequestContext(request),
+            )
+
+@cache_page(60 * 60 * 24)
+def stats(request):
+    latest_post = Post.objects.latest()
+    earliest_post = Post.objects.earliest()
+
+    latest_year = latest_post.date.year;
+    earliest_year = earliest_post.date.year;
+
+    yearly_count_dict = {}
+
+    for year in range(earliest_year, latest_year + 1):
+        yearly_count_dict[year] = Post.objects.filter(date__year=year).count()
+
+    return render_to_response('post/stats.html',
+            {'yearly_count_dict': yearly_count_dict,
+                'current': 'stats'},
+            context_instance=RequestContext(request),
             )
 
 def static_pages(request, page):

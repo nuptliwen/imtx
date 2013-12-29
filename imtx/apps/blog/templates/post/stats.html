@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n utils highlight %}
+
+{% block title %} Blog Stats | I'm TualatriX {% endblock %}
+
+{% block content %}
+<div class="post" id="stats">
+    <h2 class="pagetitle">Some statistics</h2>
+    <div class="entry">
+        <h4>Yearly post count</h4>
+        {% for year, count in yearly_count_dict.items %}
+        <li><b>{{ year }}</b>: {{ count }}</li>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
