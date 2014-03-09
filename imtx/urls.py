@@ -7,10 +7,16 @@ from django.contrib.sitemaps import views as sitemap_views
 from django.views.decorators.cache import cache_page
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+from tastypie.api import Api
+from lovekindle.api.resources import BookResource
+
 from imtx.apps.blog.models import Post, Category
 from imtx.apps.blog.feeds import LatestPosts, LatestCommentFeed
 
 admin.autodiscover()
+
+v1_api = Api(api_name='v1')
+v1_api.register(BookResource())
 
 class PostSitemap(Sitemap):
     changefreq = "monthly"
@@ -36,6 +42,7 @@ urlpatterns = patterns('',
     (r'^comment/', include('imtx.apps.comments.urls')),
     (r'^comments/$', 'imtx.apps.comments.views.comment_list'),
     (r'^xmlrpc/$', 'django_xmlrpc.views.handle_xmlrpc', {}, 'xmlrpc'),
+    (r'^api/', include(v1_api.urls)),
 )
 
 urlpatterns += patterns('imtx.apps.blog.views',

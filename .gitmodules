@@ -1,0 +1,3 @@
+[submodule "lovekindle"]
+	path = lovekindle
+	url = git@bitbucket.org:tualatrix/lovekindle.git

@@ -138,6 +138,8 @@ INSTALLED_APPS = (
     'south',
     'pipeline',
     'wechat',
+    'lovekindle',
+    'tastypie',
 )
 
 # Cache
@@ -193,6 +195,10 @@ PIPELINE_JS = {
 PIPELINE_YUI_BINARY = '/usr/local/bin/yuglify'
 
 ALLOWED_HOSTS = [u'.imtx.me', u'imtx.me.']
+
+# API
+TASTYPIE_DEFAULT_FORMATS = ['json']
+API_LIMIT_PER_PAGE = 100;
 
 try:
     from local_settings import *

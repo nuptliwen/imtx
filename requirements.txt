@@ -8,6 +8,7 @@ beautifulsoup
 pygments
 django-pipeline
 python-memcached
+django-tastypie
 
 -e svn+http://django-tagging.googlecode.com/svn/trunk/#egg=tagging
 -e git+git@github.com:tualatrix/django-xmlrpc.git@master#egg=django_xmlrpc
