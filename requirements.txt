@@ -1,7 +1,7 @@
 PIL
 fabric
 lxml
-django==1.6.4
+django==1.6.5
 south
 MySQL-python
 beautifulsoup
