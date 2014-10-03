@@ -1,7 +1,7 @@
 Pillow
 fabric
 lxml
-django==1.6.5
+django==1.6.7
 south
 MySQL-python
 beautifulsoup
