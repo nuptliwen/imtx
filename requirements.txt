@@ -5,7 +5,7 @@ django==1.6.8
 south
 MySQL-python
 beautifulsoup
-pygments
+pygments==2.0.1
 django-pipeline
 python-memcached
 django-tastypie
