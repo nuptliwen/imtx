@@ -6,7 +6,7 @@ south
 MySQL-python
 beautifulsoup
 pygments==2.0.1
-django-pipeline
+django-pipeline==1.4.2
 python-memcached
 django-tastypie
 

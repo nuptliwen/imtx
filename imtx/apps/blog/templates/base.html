@@ -1,4 +1,4 @@
-{% load compressed menu utils %}
+{% load pipeline menu utils %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +7,7 @@
     <link rel="pingback" href="{% fullurl xmlrpc %}" />
     <link rel="shortcut icon" type="image/ico" href="{{ STATIC_URL }}img/favicon.ico" />
     <meta name="google-site-verification" content="dQrNwIxyr9oBaxexqgzQKlenOC-d-7VmT_asQEizeJU" />
-    {% compressed_css "imtx" %}
+    {% stylesheet "imtx" %}
     {% block extrahead %}{% endblock %}
     <script type="text/javascript">
 
@@ -52,6 +52,6 @@
             </p>
         </div>
     </div>
-    {% compressed_js "imtx" %}
+    {% javascript "imtx" %}
 </body>
 </html>
