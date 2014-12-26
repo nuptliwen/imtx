@@ -137,7 +137,6 @@ INSTALLED_APPS = (
     'tagging',
     'south',
     'pipeline',
-    'wechat',
     'lovekindle',
     'tastypie',
 )

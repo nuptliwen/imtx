@@ -34,9 +34,7 @@ sitemaps = {
 
 urlpatterns = patterns('',
     (r'^sitemap.xml$', cache_page(60 * 60 * 6)(sitemap_views.sitemap),  {'sitemaps': sitemaps}),
-#    (r'^zhejiangpm25$', 'imtx.views.zhejiangpm25'),
     (r'^admin/', include(admin.site.urls)),
-    (r'^wechat/', include('wechat.urls')),
     url(r'^feed/latest/$', LatestPosts(), name='feed'),
     url(r'^feed/comments/$', LatestCommentFeed()),
     (r'^comment/', include('imtx.apps.comments.urls')),

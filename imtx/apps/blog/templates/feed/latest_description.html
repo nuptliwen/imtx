@@ -1,12 +1,6 @@
 {% load highlight staticfiles %}
 {% autoescape off %}
 {{ obj.content|do_highlight }}
-{% if obj.is_odd %}
 <hr />
-<p align="center"><strong>欢迎通过微信订阅IMTX</strong></p>
-<p align="center"><img width="129px" height="129px" src="http://imtx.me{% static "img/imtx-qrcode.jpg" %}" alt="imtx-qrcode"/></p>
-{% else %}
-<hr />
-<p align="center"><strong>本站架设于 <a href="http://www.linode.com/?r=3a7a044d481045ae2ff2f4469357779e2322f5c6" title="Linode">Linode 东京机房</a>，同时使用 <a href="http://ytref.com/?r=72e027aeac0d9b5d" title="云梯">云梯</a> 和 <a href="https://getqujing.com/?r=232f42ccb3" title="曲径">曲径</a> 进行科学上网</strong></p>
-{% endif %}
+<p align="center"><strong>本站架设于 <a href="http://www.linode.com/?r=3a7a044d481045ae2ff2f4469357779e2322f5c6" title="Linode">Linode 东京机房</a>，同时使用 <a href="http://ytref.com/?r=72e027aeac0d9b5d" title="云梯">云梯</a> 进行科学上网</strong></p>
 {% endautoescape %}
